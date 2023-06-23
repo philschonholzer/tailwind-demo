@@ -1,21 +1,23 @@
 function App() {
   return (
-    <>
-      <h1>Tailwind Demo</h1>
+    <main className="max-w-lg mx-auto px-6 w-full">
+      <h1 className="text-4xl font-semibold my-8">Tailwind Demo</h1>
 
-      <section>
-        <h2>Personen</h2>
+      <section className="space-y-4">
+        <h2 className="text-xl brand">Personen</h2>
         <p>Hier die aktuelle Personen </p>
 
-        {persons.map((person) => (
-          <div>
-            <p>{person.name}</p>
-            <p>
-              Alter <span>{person.age}</span>
-            </p>
-            <p>{person.language}</p>
-          </div>
-        ))}
+        <div className="flex flex-col gap-2">
+          {persons.map((person) => (
+            <div className="card">
+              <p>{person.name}</p>
+              <p>
+                Alter <span>{person.age}</span>
+              </p>
+              <p>{person.language}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section>
@@ -41,7 +43,7 @@ function App() {
 
         <button type="submit">Weiter</button>
       </section>
-    </>
+    </main>
   )
 }
 
