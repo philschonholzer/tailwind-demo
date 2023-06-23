@@ -1,4 +1,4 @@
-function App() {
+export default function Page() {
   return (
     <main className="max-w-lg mx-auto px-6 w-full">
       <h1 className="text-4xl font-semibold my-8">Tailwind Demo</h1>
@@ -9,7 +9,10 @@ function App() {
 
         <div className="flex flex-col gap-2">
           {persons.map((person) => (
-            <div className="card">
+            <div
+              key={person.name + person.age + person.language}
+              className="card"
+            >
               <p>{person.name}</p>
               <p>
                 Alter <span>{person.age}</span>
@@ -53,5 +56,3 @@ const persons = [
   { name: 'Fritz', age: 58, language: '🇩🇪' },
   { name: 'Johan', age: 24, language: '🇫🇷' },
 ] satisfies Array<{ name: string; age: number; language: '🇩🇪' | '🇫🇷' }>
-
-export default App
