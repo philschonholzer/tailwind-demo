@@ -1,3 +1,4 @@
+'use client'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -17,13 +18,43 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Person } from './page'
+import * as z from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 
+const formSchema = z.object({
+  name: z.string().min(2).max(50),
+  age: z.string().transform(Number),
+  language: z.string(),
+})
 export function NewPerson() {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+    },
+  })
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values)
+    alert(`Person hinzugefügt: ${JSON.stringify(values, null, 2)}`)
+  }
+
   return (
     <>
       <Dialog>
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <Button>Person hinzufügen</Button>
         </DialogTrigger>
         <DialogContent>
@@ -34,42 +65,73 @@ export function NewPerson() {
               weiterfahren.
             </DialogDescription>
           </DialogHeader>
-          <div>
-            <Label htmlFor="name">Name</Label>
-            <Input
-              className="rounded block w-full"
-              type="text"
-              name="name"
-              id="name"
-            />
-          </div>
-          <div>
-            <Label htmlFor="age">Alter</Label>
-            <Input
-              className="rounded block w-full"
-              type="number"
-              name="age"
-              id="age"
-            />
-          </div>
-          <div>
-            <Label htmlFor="language">Sprache</Label>
-            <Select name="language">
-              <SelectTrigger id="language">
-                <SelectValue placeholder="" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="DE">Deutsch</SelectItem>
-                <SelectItem value="FR">Français</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="text-right">
-            <DialogClose asChild>
-              <Button type="button">Weiter</Button>
-            </DialogClose>
-          </div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <div>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        Dies ist Ihr öffentlicher Anzeigename.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="age"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Alter</FormLabel>
+                      <FormControl>
+                        <Input type="number" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="language"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Sprache</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="🇩🇪">Deutsch</SelectItem>
+                            <SelectItem value="🇫🇷">Français</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormDescription>Korrespondenzsprache</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="text-right">
+                <Button type="submit">Hinzufügen</Button>
+              </div>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </>

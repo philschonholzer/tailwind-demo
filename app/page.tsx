@@ -30,9 +30,7 @@ export default function Page() {
                   <p>{person.name}</p>
                 </CardTitle>
                 <CardDescription>
-                  <p>
-                    Alter <span>{person.age}</span> {person.language}
-                  </p>
+                  Alter <span>{person.age}</span> {person.language}
                 </CardDescription>
               </CardHeader>
             </Card>
