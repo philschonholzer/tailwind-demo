@@ -7,6 +7,7 @@ import {
 
 import { NewPerson } from './new-person'
 import { ModeToggle } from '@/components/dark-mode-toggle'
+import { revalidatePath } from 'next/cache'
 
 export default function Page() {
   return (
@@ -20,7 +21,7 @@ export default function Page() {
         <section className="space-y-2">
           <div className="flex gap-2 justify-between">
             <h2 className="text-2xl font-bold text-brand">Personen</h2>
-            <NewPerson />
+            <NewPerson onAddPerson={addPerson} />
           </div>
           <p>Hier die aktuelle Personen </p>
 
@@ -45,6 +46,12 @@ export default function Page() {
       </main>
     </>
   )
+}
+
+async function addPerson(person: Person) {
+  'use server'
+  persons.push(person)
+  revalidatePath('/')
 }
 
 export type Person = {

@@ -30,13 +30,18 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import type { Person } from './page'
+import { useState } from 'react'
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
   age: z.string().transform(Number),
-  language: z.string(),
+  language: z.enum(['🇩🇪', '🇫🇷']),
 })
-export function NewPerson() {
+export function NewPerson(props: {
+  onAddPerson: (person: Person) => Promise<void>
+}) {
+  const [open, setOpen] = useState(false)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,18 +49,16 @@ export function NewPerson() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
-    alert(`Person hinzugefügt: ${JSON.stringify(values, null, 2)}`)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await props.onAddPerson(values)
+    setOpen(false)
   }
 
   return (
     <>
-      <Dialog>
+      <Dialog open={open} onOpenChange={() => open && setOpen(false)}>
         <DialogTrigger asChild>
-          <Button>Person hinzufügen</Button>
+          <Button onClick={() => setOpen(true)}>Person hinzufügen</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -109,6 +112,7 @@ export function NewPerson() {
                       <FormLabel>Sprache</FormLabel>
                       <FormControl>
                         <Select
+                          // @ts-ignore
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
