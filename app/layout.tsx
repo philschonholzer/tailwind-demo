@@ -1,3 +1,4 @@
+import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 import { Inter } from 'next/font/google'
 
@@ -14,8 +15,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="de">
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <body className={`dark:bg-slate-950 ${inter.className}`}>
+          {children}
+        </body>
+      </ThemeProvider>
     </html>
   )
 }

@@ -6,38 +6,44 @@ import {
 } from '@/components/ui/card'
 
 import { NewPerson } from './new-person'
+import { ModeToggle } from '@/components/dark-mode-toggle'
 
 export default function Page() {
   return (
-    <main className="max-w-lg mx-auto px-6 w-full space-y-14 py-20">
-      <h1 className="text-4xl font-semibold">Tailwind Demo</h1>
-
-      <section className="space-y-2">
-        <div className="flex gap-2 justify-between">
-          <h2 className="text-2xl font-bold text-brand">Personen</h2>
-          <NewPerson />
+    <>
+      <main className="max-w-lg mx-auto px-6 w-full space-y-14 py-20">
+        <div className="flex justify-between ">
+          <h1 className="text-4xl font-semibold">Tailwind Demo</h1>
+          <ModeToggle />
         </div>
-        <p>Hier die aktuelle Personen </p>
 
-        <div className="flex flex-col gap-2">
-          {persons.map((person) => (
-            <Card
-              key={person.name + person.age + person.language}
-              className="card"
-            >
-              <CardHeader>
-                <CardTitle>
-                  <p>{person.name}</p>
-                </CardTitle>
-                <CardDescription>
-                  Alter <span>{person.age}</span> {person.language}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          ))}
-        </div>
-      </section>
-    </main>
+        <section className="space-y-2">
+          <div className="flex gap-2 justify-between">
+            <h2 className="text-2xl font-bold text-brand">Personen</h2>
+            <NewPerson />
+          </div>
+          <p>Hier die aktuelle Personen </p>
+
+          <div className="flex flex-col gap-2">
+            {persons.map((person) => (
+              <Card
+                key={person.name + person.age + person.language}
+                className="card"
+              >
+                <CardHeader>
+                  <CardTitle>
+                    <p>{person.name}</p>
+                  </CardTitle>
+                  <CardDescription>
+                    Alter <span>{person.age}</span> {person.language}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
+          </div>
+        </section>
+      </main>
+    </>
   )
 }
 
